@@ -8,9 +8,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:444561026880:android:99a69839e77da50d9154a5",
+        "mobilesdk_app_id": "1:444561026880:android:b19a9a479b6ae7119154a5",
         "android_client_info": {
-          "package_name": "com.netmarket.app"
+          "package_name": "com.example.netmarket_flutter"
         }
       },
       "oauth_client": [],
