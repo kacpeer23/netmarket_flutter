@@ -1,10 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:netmarket_flutter/auth.dart';
+import 'package:netmarket_flutter/services/auth_service.dart';
 
 class LoginScreen extends StatefulWidget {
-  final Auth auth = Auth();
-
   LoginScreen({super.key});
 
   @override
@@ -24,7 +22,9 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final AuthService auth = AuthService();
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         centerTitle: true,
         title: const Text('Logowanie'),
@@ -35,19 +35,22 @@ class _LoginScreenState extends State<LoginScreen> {
         padding: const EdgeInsets.all(8.0),
         child: Column(
           children: [
-            const TextField(
-              decoration: InputDecoration(
+            TextField(
+              controller: emailTextController,
+              decoration: const InputDecoration(
                 labelText: 'Adres e-mail',
                 labelStyle: TextStyle(fontSize: 13, color: Colors.black54),
               ),
             ),
             const SizedBox(height: 20),
             TextField(
+              controller: passwordTextController,
               obscureText: _obscureText,
               decoration: InputDecoration(
                   labelText: 'Hasło',
                   focusColor: Colors.blue,
-                  labelStyle: TextStyle(fontSize: 13, color: Colors.black54),
+                  labelStyle:
+                      const TextStyle(fontSize: 13, color: Colors.black54),
                   suffixIcon: GestureDetector(
                       onTap: () {
                         _toggle();
@@ -60,13 +63,10 @@ class _LoginScreenState extends State<LoginScreen> {
               height: 20,
             ),
             SizedBox(
-                width: MediaQuery
-                    .of(context)
-                    .size
-                    .width,
+                width: MediaQuery.of(context).size.width,
                 child: ElevatedButton(
                     onPressed: () async {
-                      await signInWithEmailAndPassword();
+                      await signInWithEmailAndPassword(auth);
                     },
                     child: const Text(
                       'Zaloguj się',
@@ -74,17 +74,16 @@ class _LoginScreenState extends State<LoginScreen> {
                     ))),
             const SizedBox(height: 10),
             SizedBox(
-                width: MediaQuery
-                    .of(context)
-                    .size
-                    .width,
+                width: MediaQuery.of(context).size.width,
                 child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () async {
+                      await createUserWithEmailAndPassword(auth);
+                    },
                     style: ButtonStyle(
                         foregroundColor:
-                        WidgetStateProperty.all<Color>(Colors.blueAccent),
+                            WidgetStateProperty.all<Color>(Colors.blueAccent),
                         backgroundColor:
-                        WidgetStateProperty.all<Color>(Colors.white),
+                            WidgetStateProperty.all<Color>(Colors.white),
                         shape: WidgetStateProperty.all<RoundedRectangleBorder>(
                           RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(18.0),
@@ -92,7 +91,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                         )),
                     child: const Text(
-                      'Zaloguj się',
+                      'Zarejestruj się',
                       style: TextStyle(fontSize: 14),
                     ))),
           ],
@@ -101,24 +100,22 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  Future<void> signInWithEmailAndPassword() async {
+  Future<void> signInWithEmailAndPassword(AuthService auth) async {
     try {
-      await widget.auth.signInWithEmailAndPassword(
+      await auth.signInWithEmailAndPassword(
           email: emailTextController.text,
           password: passwordTextController.text);
-    }
-    on FirebaseAuthException catch (e) {
+    } on FirebaseAuthException catch (e) {
       print('signInWithEmailAndPassword error: $e, code: ${e.code}');
     }
   }
 
-  Future<void> createUserWithEmailAndPassword() async {
+  Future<void> createUserWithEmailAndPassword(AuthService auth) async {
     try {
-      await widget.auth.createUserWithEmailAndPassword(
+      await auth.createUserWithEmailAndPassword(
           email: emailTextController.text,
           password: passwordTextController.text);
-    }
-    on FirebaseAuthException catch (e) {
+    } on FirebaseAuthException catch (e) {
       print('createUserWithEmailAndPassword error: $e');
     }
   }

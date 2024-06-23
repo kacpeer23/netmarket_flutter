@@ -1,7 +1,9 @@
-import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:netmarket_flutter/login_screen.dart';
-import 'firebase_options.dart';
+import 'package:flutter/material.dart';
+import 'package:netmarket_flutter/services/auth_service.dart';
+import 'package:netmarket_flutter/services/database_service.dart';
+import 'package:netmarket_flutter/wrapper.dart';
+import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -14,22 +16,28 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'NetMarket',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        appBarTheme: const AppBarTheme(
-          backgroundColor: Colors.white,
+    return MultiProvider(
+      providers: [
+        Provider<AuthService>(create: (_) => AuthService()),
+    ChangeNotifierProvider(create: (_) => DatabaseService()),
+      ],
+      child: MaterialApp(
+        title: 'NetMarket',
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+          appBarTheme: const AppBarTheme(
+            backgroundColor: Colors.white,
+          ),
+          elevatedButtonTheme: ElevatedButtonThemeData(
+              style: ButtonStyle(
+                  backgroundColor: WidgetStateProperty.resolveWith<Color>(
+                      (states) => Colors.blueAccent),
+                  foregroundColor: WidgetStateProperty.resolveWith<Color>(
+                      (states) => Colors.white))),
+          useMaterial3: true,
         ),
-        elevatedButtonTheme: ElevatedButtonThemeData(
-            style: ButtonStyle(
-                backgroundColor: WidgetStateProperty.resolveWith<Color>(
-                    (states) => Colors.blueAccent),
-                foregroundColor: WidgetStateProperty.resolveWith<Color>(
-                    (states) => Colors.white))),
-        useMaterial3: true,
+        home: const Wrapper(),
       ),
-      home: LoginScreen(),
     );
   }
 }
