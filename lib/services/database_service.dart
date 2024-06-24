@@ -22,6 +22,21 @@ class DatabaseService with ChangeNotifier {
     }
   }
 
+  Future<List<Product>> fetchItemsByCategory(String category) async {
+    try {
+      QuerySnapshot snapshot = await _firestore
+          .collection('product')
+          .where('category', isEqualTo: category)
+          .get();
+      final products =
+          snapshot.docs.map((doc) => Product.fromDocument(doc)).toList();
+      notifyListeners();
+      return products;
+    } catch (e) {
+      return [];
+    }
+  }
+
   Future<void> addItem(String name) async {
     try {
       await _firestore.collection('items').add({'name': name});

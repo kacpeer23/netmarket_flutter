@@ -1,16 +1,16 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:netmarket_flutter/screens/sign_up_screen.dart';
 import 'package:netmarket_flutter/services/auth_service.dart';
+import 'package:provider/provider.dart';
 
-class LoginScreen extends StatefulWidget {
-  LoginScreen({super.key});
+class SignUpScreen extends StatefulWidget {
+  const SignUpScreen({Key? key}) : super(key: key);
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  _SignUpScreenState createState() => _SignUpScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _SignUpScreenState extends State<SignUpScreen> {
   bool _obscureText = true;
   final emailTextController = TextEditingController();
   final passwordTextController = TextEditingController();
@@ -23,12 +23,12 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final AuthService auth = AuthService();
+    final auth = Provider.of<AuthService>(context);
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
         centerTitle: true,
-        title: const Text('Sign in'),
+        title: const Text('Sign up'),
         bottom: const PreferredSize(
             preferredSize: Size.fromHeight(2.0), child: Divider()),
       ),
@@ -67,43 +67,18 @@ class _LoginScreenState extends State<LoginScreen> {
                 width: MediaQuery.of(context).size.width,
                 child: ElevatedButton(
                     onPressed: () async {
-                      await signInWithEmailAndPassword(auth);
-                    },
-                    child: const Text(
-                      'Sign in',
-                      style: TextStyle(fontSize: 14),
-                    ))),
-            const SizedBox(height: 10),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text('Don\'t have an account?'),
-                TextButton(
-                    onPressed: () async {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => const SignUpScreen()));
+                      await createUserWithEmailAndPassword(auth).then((value) {
+                        Navigator.pop(context);
+                      });
                     },
                     child: const Text(
                       'Sign up',
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          decoration: TextDecoration.underline),
-                    ))
-              ],
-            ),
+                      style: TextStyle(fontSize: 14),
+                    ))),
           ],
         ),
       ),
     );
-  }
-
-  Future<void> signInWithEmailAndPassword(AuthService auth) async {
-    try {
-      await auth.signInWithEmailAndPassword(
-          email: emailTextController.text,
-          password: passwordTextController.text);
-    } on FirebaseAuthException catch (e) {
-      print('signInWithEmailAndPassword error: $e, code: ${e.code}');
-    }
   }
 
   Future<void> createUserWithEmailAndPassword(AuthService auth) async {

@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:netmarket_flutter/screens/category_screen.dart';
 
 class CategoryListItem extends StatelessWidget {
   final String imageUrl;
@@ -10,15 +11,22 @@ class CategoryListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Expanded(
-          child: CachedNetworkImage(
-            imageUrl: imageUrl,
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(context, MaterialPageRoute(builder: (context) {
+          return CategoryScreen(category: title);
+        }));
+      },
+      child: Column(
+        children: [
+          Expanded(
+            child: CachedNetworkImage(
+              imageUrl: imageUrl,
+            ),
           ),
-        ),
-        Text(title),
-      ],
+          Text(title),
+        ],
+      ),
     );
   }
 }

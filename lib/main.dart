@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:netmarket_flutter/models/cart.dart';
 import 'package:netmarket_flutter/services/auth_service.dart';
 import 'package:netmarket_flutter/services/database_service.dart';
 import 'package:netmarket_flutter/wrapper.dart';
@@ -19,7 +20,8 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         Provider<AuthService>(create: (_) => AuthService()),
-    ChangeNotifierProvider(create: (_) => DatabaseService()),
+        ChangeNotifierProvider(create: (_) => DatabaseService()),
+        ChangeNotifierProvider(create: (context) => Cart()),
       ],
       child: MaterialApp(
         title: 'NetMarket',
@@ -28,6 +30,7 @@ class MyApp extends StatelessWidget {
           appBarTheme: const AppBarTheme(
             backgroundColor: Colors.white,
           ),
+          scaffoldBackgroundColor: Colors.white,
           elevatedButtonTheme: ElevatedButtonThemeData(
               style: ButtonStyle(
                   backgroundColor: WidgetStateProperty.resolveWith<Color>(
