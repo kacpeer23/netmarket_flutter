@@ -3,7 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:netmarket_flutter/models/cart.dart';
 import 'package:provider/provider.dart';
 
-class CartScreen extends StatelessWidget {
+class CartScreen extends StatefulWidget {
+  const CartScreen({super.key});
+
+  @override
+  State<CartScreen> createState() => _CartScreenState();
+}
+
+class _CartScreenState extends State<CartScreen> {
   @override
   Widget build(BuildContext context) {
     final cart = Provider.of<Cart>(context);
@@ -70,8 +77,28 @@ class CartScreen extends StatelessWidget {
       ),
       bottomNavigationBar: Container(
         padding: const EdgeInsets.all(20),
-        child: Text('Total: ${cart.totalPrice.toStringAsFixed(2)} zł',
-            style: const TextStyle(fontSize: 20)),
+        child: Row(
+          children: [
+            Expanded(
+              child: Text('Total: ${cart.totalPrice.toStringAsFixed(2)} zł',
+                  style: const TextStyle(fontSize: 20)),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                cart.addOrder();
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Order placed successfully!'),
+                  ),
+                );
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.grey,
+              ),
+              child: const Text('Order'),
+            ),
+          ],
+        ),
       ),
     );
   }

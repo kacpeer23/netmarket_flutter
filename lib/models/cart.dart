@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:netmarket_flutter/models/order_model.dart';
+import 'package:netmarket_flutter/services/database_service.dart';
 
 import 'product.dart';
 
 class Cart with ChangeNotifier {
+  final DatabaseService _databaseService = DatabaseService();
   final List<Product> _items = [];
 
   List<Product> get items => _items;
@@ -18,8 +21,7 @@ class Cart with ChangeNotifier {
   }
 
   int get totalCountOfProducts {
-    return _items
-        .fold(0, (sum, product) => sum + product.countOfProducts);
+    return _items.fold(0, (sum, product) => sum + product.countOfProducts);
   }
 
   double get totalPrice {
@@ -39,5 +41,14 @@ class Cart with ChangeNotifier {
   void clear() {
     _items.clear();
     notifyListeners();
+  }
+
+  Future<void> addOrder() async {
+    await _databaseService.addOrder(OrderModel(
+      totalPrice: totalPrice,
+      products: _items,
+      orderDate: DateTime.now(),
+    ));
+    clear();
   }
 }

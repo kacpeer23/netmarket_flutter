@@ -23,6 +23,11 @@ class DeviceInfoScreen extends StatelessWidget {
               children: [
                 CachedNetworkImage(imageUrl: product.productImageUrl),
                 Text(product.description),
+                const SizedBox(height: 20),
+                Text(
+                  'Price: ${product.price}zł',
+                  style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
               ],
             ),
           ),

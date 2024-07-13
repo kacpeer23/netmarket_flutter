@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:netmarket_flutter/models/cart.dart';
 import 'package:netmarket_flutter/pages/main_page.dart';
 import 'package:netmarket_flutter/screens/cart_screen.dart';
+import 'package:netmarket_flutter/screens/profile_screen.dart';
 import 'package:netmarket_flutter/screens/search_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -26,6 +27,7 @@ class _HomePageState extends State<HomePage> {
     const MainPage(),
     SearchScreen(),
     CartScreen(),
+    const ProfileScreen(),
   ];
 
   @override

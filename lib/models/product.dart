@@ -19,6 +19,20 @@ class Product {
     required this.countOfProducts,
   });
 
+  @override
+  String toString() {
+    return 'Product{category: $category, description: $description, productImageUrl: $productImageUrl, price: $price, title: $title, id: $id, countOfProducts: $countOfProducts}';
+  }
+
+  Product.fromMap(Map<String, dynamic> map)
+      : category = map['category'] ?? '',
+        description = map['description'] ?? '',
+        productImageUrl = map['productImageUrl'] ?? '',
+        price = map['price'],
+        title = map['title'] ?? '',
+        id = map['id'],
+        countOfProducts = map['quantity'] ?? 0;
+
   Product.fromDocument(DocumentSnapshot json)
       : category = json['category'],
         description = json['description'],
@@ -28,6 +42,17 @@ class Product {
         id = json['id'],
         countOfProducts = 0;
 
+  Map<String, dynamic> toMap() {
+    return {
+      'category': category,
+      'description': description,
+      'productImageUrl': productImageUrl,
+      'price': price,
+      'title': title,
+      'id': id,
+      'quantity': countOfProducts,
+    };
+  }
   double get totalCost {
     double? priceDouble = double.tryParse(price);
     if (priceDouble != null) {
@@ -37,13 +62,4 @@ class Product {
       return 0.0;
     }
   }
-
-  Map<String, dynamic> toMap() => {
-        'category': category,
-        'description': description,
-        'productImageUrl': productImageUrl,
-        'price': price,
-        'title': title,
-        'id': id,
-      };
 }
