@@ -25,7 +25,6 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     final AuthService auth = AuthService();
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: AppBar(
         centerTitle: true,
         title: const Text('Sign in'),
@@ -40,7 +39,7 @@ class _LoginScreenState extends State<LoginScreen> {
               controller: emailTextController,
               decoration: const InputDecoration(
                 labelText: 'E-mail',
-                labelStyle: TextStyle(fontSize: 13, color: Colors.black54),
+                labelStyle: TextStyle(fontSize: 13),
               ),
             ),
             const SizedBox(height: 20),
@@ -51,7 +50,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   labelText: 'Password',
                   focusColor: Colors.blue,
                   labelStyle:
-                      const TextStyle(fontSize: 13, color: Colors.black54),
+                      const TextStyle(fontSize: 13,),
                   suffixIcon: GestureDetector(
                       onTap: () {
                         _toggle();
