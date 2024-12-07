@@ -35,7 +35,8 @@ class _SearchScreenState extends State<SearchScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Search Products'),
+        centerTitle: true,
+        title: const Text('Wyszukiwarka produktów'),
       ),
       body: Column(
         children: [
@@ -43,7 +44,7 @@ class _SearchScreenState extends State<SearchScreen> {
             padding: const EdgeInsets.all(8.0),
             child: TextField(
               decoration: const InputDecoration(
-                labelText: 'Search',
+                labelText: 'Wyszukaj produkt...',
                 border: OutlineInputBorder(),
                 suffixIcon: Icon(Icons.search),
               ),

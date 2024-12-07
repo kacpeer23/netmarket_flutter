@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:netmarket_flutter/models/address_info.dart';
 import 'package:netmarket_flutter/models/order_model.dart';
 import 'package:netmarket_flutter/services/database_service.dart';
 
@@ -43,11 +45,23 @@ class Cart with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> addOrder() async {
+  Future<void> addOrder(
+      {required String address,
+      required String mobileNumber,
+      required String name,
+      required String email}) async {
     await _databaseService.addOrder(OrderModel(
-      totalPrice: totalPrice,
-      products: _items,
-      orderDate: DateTime.now(),
+      cartItems: _items,
+      time: DateTime.now(),
+      addressInfo: AddressInfo(
+          address: address,
+          date: DateFormat('MMM d, yyyy').format(DateTime.now()).toString(),
+          mobileNumber: mobileNumber,
+          name: name,
+          pincode: '',
+          time: DateTime.now()),
+      email: email,
+      status: 'confirmed',
     ));
     clear();
   }

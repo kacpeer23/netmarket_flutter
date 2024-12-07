@@ -26,7 +26,7 @@ class _HomePageState extends State<HomePage> {
   final List<Widget> _children = [
     const MainPage(),
     SearchScreen(),
-    CartScreen(),
+    const CartScreen(),
     const ProfileScreen(),
   ];
 
@@ -34,42 +34,48 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     final cart = Provider.of<Cart>(context);
     return Scaffold(
-      backgroundColor: Colors.white,
-      bottomNavigationBar: BottomNavigationBar(
-        onTap: onTabTapped,
-        showSelectedLabels: false,
-        showUnselectedLabels: false,
-        items: [
-          const BottomNavigationBarItem(
-              backgroundColor: Colors.white,
-              icon: Icon(
-                Icons.home,
-                color: Colors.black,
-              ),
-              label: ''),
-          const BottomNavigationBarItem(
-              icon: Icon(
-                Icons.search,
-                color: Colors.black,
-              ),
-              label: ''),
-          BottomNavigationBarItem(
-              icon: Badge(
-                isLabelVisible: cart.totalCountOfProducts > 0,
-                label: Text(cart.totalCountOfProducts.toString()),
-                offset: const Offset(10, -12),
-                child: const Icon(
-                  Icons.shopping_cart,
-                  color: Colors.black,
-                ),
-              ),
-              label: ''),
-          const BottomNavigationBarItem(
-              icon: Icon(
-                Icons.person,
-                color: Colors.black,
-              ),
-              label: ''),
+      bottomNavigationBar: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const Divider(
+            color: Colors.grey,
+            thickness: 1,
+            height: 1,
+          ),
+          BottomNavigationBar(
+            currentIndex: currentIndex,
+            onTap: onTabTapped,
+            showSelectedLabels: false,
+            showUnselectedLabels: false,
+            type: BottomNavigationBarType.fixed,
+            items: [
+              const BottomNavigationBarItem(
+                  icon: Icon(
+                    Icons.home,
+                  ),
+                  label: ''),
+              const BottomNavigationBarItem(
+                  icon: Icon(
+                    Icons.search,
+                  ),
+                  label: ''),
+              BottomNavigationBarItem(
+                  icon: Badge(
+                    isLabelVisible: cart.totalCountOfProducts > 0,
+                    label: Text(cart.totalCountOfProducts.toString()),
+                    offset: const Offset(10, -12),
+                    child: const Icon(
+                      Icons.shopping_cart,
+                    ),
+                  ),
+                  label: ''),
+              const BottomNavigationBarItem(
+                  icon: Icon(
+                    Icons.person,
+                  ),
+                  label: ''),
+            ],
+          ),
         ],
       ),
       body: _children[currentIndex],

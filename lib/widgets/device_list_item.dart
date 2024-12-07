@@ -20,6 +20,7 @@ class _DeviceListItemState extends State<DeviceListItem> {
   @override
   Widget build(BuildContext context) {
     final cart = Provider.of<Cart>(context);
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return GestureDetector(
       onTap: () {
         Navigator.push(context, MaterialPageRoute(builder: (context) {
@@ -37,8 +38,32 @@ class _DeviceListItemState extends State<DeviceListItem> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Expanded(
-              child:
-                  CachedNetworkImage(imageUrl: widget.product.productImageUrl),
+              child: CachedNetworkImage(
+                imageUrl: widget.product.productImageUrl,
+                imageBuilder: (context, imageProvider) => Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(16.0),
+                    boxShadow: [
+                      BoxShadow(
+                        color: isDarkMode ? Colors.white.withOpacity(0.25) : Colors.black.withOpacity(0.25),
+                        offset: const Offset(4, 4),
+                        blurRadius: 10,
+                        spreadRadius: 0,
+                      ),
+                    ],
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(16.0),
+                    child: Image(
+                      image: imageProvider,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
+                placeholder: (context, url) =>
+                    const CircularProgressIndicator(),
+                errorWidget: (context, url, error) => const Icon(Icons.error),
+              ),
             ),
             const SizedBox(height: 5),
             Text(widget.product.title,
@@ -55,31 +80,28 @@ class _DeviceListItemState extends State<DeviceListItem> {
               children: [
                 ElevatedButton(
                   onPressed: () {
-                    if(countOfDevices > 0) {
+                    if (countOfDevices > 0) {
                       widget.product.countOfProducts = countOfDevices;
                       cart.addItem(widget.product);
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
                           backgroundColor: Colors.green,
-                          content: Text('Added to cart'),
+                          content: Text('Dodano do koszyka'),
                           duration: Duration(seconds: 2),
                         ),
                       );
-                    }
-                    else {
+                    } else {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
                           backgroundColor: Colors.red,
-                          content: Text('Please select at least one device'),
+                          content:
+                              Text('Wybierz przynajmniej jedno urządzenie'),
                           duration: Duration(seconds: 2),
                         ),
                       );
                     }
                   },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.grey,
-                  ),
-                  child: const Text('Add to cart'),
+                  child: const Text('Dodaj do koszyka'),
                 ),
                 ElevatedButton(
                   onPressed: () {
@@ -88,7 +110,6 @@ class _DeviceListItemState extends State<DeviceListItem> {
                     });
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.grey,
                     shape: const CircleBorder(),
                   ),
                   child: const Text('+'),
@@ -104,7 +125,6 @@ class _DeviceListItemState extends State<DeviceListItem> {
                   },
                   style: ElevatedButton.styleFrom(
                     shape: const CircleBorder(),
-                    backgroundColor: Colors.grey,
                   ),
                   child: const Text('-'),
                 ),

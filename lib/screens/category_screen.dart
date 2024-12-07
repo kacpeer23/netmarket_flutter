@@ -23,7 +23,7 @@ class CategoryScreen extends StatelessWidget {
               itemCount: snapshot.data?.length ?? 0,
               itemBuilder: (context, index) {
                 return Padding(
-                    padding: EdgeInsets.all(8),
+                    padding: const EdgeInsets.all(8),
                     child: DeviceListItem(product: snapshot.data![index]));
               },
             );

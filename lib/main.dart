@@ -25,20 +25,57 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         title: 'NetMarket',
-        theme: ThemeData(
+        theme:  ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           appBarTheme: const AppBarTheme(
             backgroundColor: Colors.white,
+            foregroundColor: Colors.black,
+            centerTitle: true,
           ),
           scaffoldBackgroundColor: Colors.white,
           elevatedButtonTheme: ElevatedButtonThemeData(
-              style: ButtonStyle(
-                  backgroundColor: WidgetStateProperty.resolveWith<Color>(
-                      (states) => Colors.blueAccent),
-                  foregroundColor: WidgetStateProperty.resolveWith<Color>(
-                      (states) => Colors.white))),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.deepPurple,
+              foregroundColor: Colors.white,
+            ),
+          ),
+          iconTheme: const IconThemeData(color: Colors.black),
+          bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+            selectedItemColor: Colors.deepPurple,
+            unselectedItemColor: Colors.black,
+            backgroundColor: Colors.white,
+            elevation: 8,
+          ),
           useMaterial3: true,
         ),
+
+        darkTheme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(
+            seedColor: Colors.deepPurple,
+            brightness: Brightness.dark,
+          ),
+          iconTheme: const IconThemeData(color: Colors.white),
+          appBarTheme: AppBarTheme(
+            backgroundColor: Colors.grey[900],
+            foregroundColor: Colors.white,
+          ),
+          scaffoldBackgroundColor: Colors.grey[900],
+          elevatedButtonTheme: ElevatedButtonThemeData(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.deepPurpleAccent,
+              foregroundColor: Colors.white,
+            ),
+          ),
+          bottomNavigationBarTheme: BottomNavigationBarThemeData(
+            selectedItemColor: Colors.deepPurple,
+            unselectedItemColor: Colors.white,
+            backgroundColor: Colors.grey[900],
+          ),
+          useMaterial3: true,
+        ),
+
+        // Automatyczne dopasowanie motywu do ustawień systemowych
+        themeMode: ThemeMode.system,
         home: const Wrapper(),
       ),
     );

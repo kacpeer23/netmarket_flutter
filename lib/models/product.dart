@@ -27,11 +27,13 @@ class Product {
   Product.fromMap(Map<String, dynamic> map)
       : category = map['category'] ?? '',
         description = map['description'] ?? '',
-        productImageUrl = map['productImageUrl'] ?? '',
+        productImageUrl = map['productImageurl'] ?? '',
         price = map['price'],
         title = map['title'] ?? '',
-        id = map['id'],
-        countOfProducts = map['quantity'] ?? 0;
+        id = map['id'] is int ? map['id'] : 0,
+        countOfProducts = map['quantity'] ?? 0 {
+    print('Product.fromMap: $map');
+  }
 
   Product.fromDocument(DocumentSnapshot json)
       : category = json['category'],
@@ -39,7 +41,7 @@ class Product {
         productImageUrl = json['productImageurl'],
         price = json['price'],
         title = json['title'],
-        id = json['id'],
+        id =  json['id'] ?? 0,
         countOfProducts = 0;
 
   Map<String, dynamic> toMap() {

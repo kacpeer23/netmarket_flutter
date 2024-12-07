@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:netmarket_flutter/models/order_model.dart';
 import 'package:netmarket_flutter/models/product.dart';
@@ -46,58 +47,31 @@ class DatabaseService with ChangeNotifier {
   }
 
   Future<void> addOrder(OrderModel order) async {
-    int newOrderId = await _getNewOrderId();
-
-    if (newOrderId == -1) {
-      print('Error retrieving new order ID');
-      return;
-    }
-
+    final fireBaseAuth = FirebaseAuth.instance;
     try {
-      Map<String, dynamic> orderData = order.toMap(newOrderId);
+      Map<String, dynamic> orderData = order.toMap();
+      String uid = fireBaseAuth.currentUser!.uid;
       print('Order data to be added to Firestore: $orderData');
-      await _firestore
-          .collection('orders')
-          .doc(newOrderId.toString())
-          .set(orderData);
-      print('Order added to Firestore with ID: $newOrderId');
+      await _firestore.collection('order').doc(uid).set(orderData);
     } catch (e) {
       print('Error adding order to Firestore: $e');
     }
   }
 
-
   Future<List<OrderModel>> getOrders() async {
     try {
-      QuerySnapshot querySnapshot = await _firestore.collection('orders').get();
+      QuerySnapshot querySnapshot = await _firestore.collection('order').get();
       List<OrderModel> orders = querySnapshot.docs
-          .map((doc) => OrderModel.fromDocument(doc))
+          .map((doc) {
+            print('doc: ${doc.data()}');
+            return OrderModel.fromDocument(doc);})
           .toList();
       log('Orders retrieved from Firestore: $orders');
       return orders;
-    } catch (e) {
-      print('Error retrieving orders: $e');
+    } catch (e, st) {
+      print('Error retrieving orders: $e, $st');
       return [];
     }
   }
-  Future<int> _getNewOrderId() async {
-    try {
-      QuerySnapshot querySnapshot = await _firestore
-          .collection('orders')
-          .orderBy('id', descending: true)
-          .limit(1)
-          .get();
 
-      if (querySnapshot.docs.isNotEmpty) {
-        var lastOrder = querySnapshot.docs.first;
-        int lastOrderId = lastOrder['id'];
-        return lastOrderId + 1;
-      } else {
-        return 1;
-      }
-    } catch (e) {
-      print('Error retrieving last order ID: $e');
-      return -1;
-    }
-  }
 }

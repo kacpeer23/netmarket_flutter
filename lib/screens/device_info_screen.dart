@@ -10,9 +10,8 @@ class DeviceInfoScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+
       appBar: AppBar(
-        backgroundColor: Colors.white,
         title: Text(product.title),
       ),
       body: SingleChildScrollView(
@@ -21,11 +20,36 @@ class DeviceInfoScreen extends StatelessWidget {
           child: Center(
             child: Column(
               children: [
-                CachedNetworkImage(imageUrl: product.productImageUrl),
-                Text(product.description),
+                CachedNetworkImage(
+                  imageUrl: product.productImageUrl,
+                  imageBuilder: (context, imageProvider) => Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(16.0),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.25),
+                          offset: const Offset(4, 4),
+                          blurRadius: 10,
+                          spreadRadius: 0,
+                        ),
+                      ],
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(16.0),
+                      child: Image(
+                        image: imageProvider,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                  placeholder: (context, url) => const CircularProgressIndicator(),
+                  errorWidget: (context, url, error) => const Icon(Icons.error),
+                ),
+                const SizedBox(height: 20),
+                Text(product.description, style: const TextStyle(fontSize: 16), textAlign: TextAlign.center,),
                 const SizedBox(height: 20),
                 Text(
-                  'Price: ${product.price}zł',
+                  'Cena: ${product.price} zł',
                   style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
               ],

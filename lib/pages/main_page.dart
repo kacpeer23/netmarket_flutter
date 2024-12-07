@@ -11,7 +11,6 @@ class MainPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final authService = Provider.of<AuthService>(context);
     return Scaffold(
-        backgroundColor: Colors.white,
         appBar: AppBar(
           centerTitle: true,
           title: const Text(
@@ -27,7 +26,10 @@ class MainPage extends StatelessWidget {
             ),
           ],
           bottom: const PreferredSize(
-              preferredSize: Size.fromHeight(2.0), child: Divider()),
+              preferredSize: Size.fromHeight(2.0),
+              child: Divider(
+                color: Colors.grey,
+              )),
         ),
         body: SingleChildScrollView(
           child: Padding(
@@ -73,7 +75,7 @@ class MainPage extends StatelessWidget {
                 ),
                 const SizedBox(height: 20),
                 const Text(
-                  'Bestselling products',
+                  'Bestsellery',
                   style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 20),
