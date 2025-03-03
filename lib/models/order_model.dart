@@ -40,6 +40,9 @@ class OrderModel {
     orders.sort((a, b) => b.time.compareTo(a.time));
     return orders;
   }
+  String get formattedDate {
+    return DateFormat('d MMMM HH:mm', 'pl_PL').format(time).toString();
+  }
   double get totalPrice {
     double total = 0.0;
     for (var product in cartItems) {

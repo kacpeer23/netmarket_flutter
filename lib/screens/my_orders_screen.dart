@@ -31,7 +31,7 @@ class MyOrdersScreen extends StatelessWidget {
               itemBuilder: (context, index) {
                 final order = orders[index];
                 return OrderContainer(
-                  orderDate: order.time.toString(),
+                  orderDate: order.formattedDate,
                   totalPrice: order.totalPrice.toDouble(),
                   products: order.cartItems,
                 );

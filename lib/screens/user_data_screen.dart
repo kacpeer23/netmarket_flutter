@@ -91,20 +91,6 @@ class UserDataScreen extends StatelessWidget {
                 ),
               ),
             ),
-            const SizedBox(height: 40),
-            // Forgot Password Button
-            TextButton(
-              onPressed: () {
-                _showForgotPasswordDialog(context, authService);
-              },
-              child: const Text(
-                'Zapomniałeś hasła?',
-                style: TextStyle(
-                  color: Colors.blueAccent,
-                  fontSize: 16,
-                ),
-              ),
-            ),
             const SizedBox(height: 20),
             // Sign Out Button
             ElevatedButton.icon(
@@ -129,75 +115,6 @@ class UserDataScreen extends StatelessWidget {
           ],
         ),
       ),
-    );
-  }
-
-  void _showForgotPasswordDialog(
-      BuildContext context, AuthService authService) {
-    final emailController = TextEditingController();
-
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20),
-          ),
-          title: const Text('Zresetuj hasło'),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const Text(
-                'Wprowadź swój email, aby zresetować hasło.',
-                style: TextStyle(fontSize: 14),
-              ),
-              const SizedBox(height: 10),
-              TextField(
-                controller: emailController,
-                decoration: InputDecoration(
-                  labelText: 'Email',
-                  prefixIcon: const Icon(Icons.email),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
-              ),
-            ],
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text('Anuluj'),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                final email = emailController.text.trim();
-                if (email.isNotEmpty) {
-                  authService.sendPasswordResetEmail(email);
-                  Navigator.of(context).pop();
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text(
-                          'E-mail z linkiem do zresetowania hasła został wysłany. Sprawdź swoją skrzynkę pocztową.'),
-                      backgroundColor: Colors.green,
-                    ),
-                  );
-                } else {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Wprowadź prawidłowy adres e-mail'),
-                      backgroundColor: Colors.red,
-                    ),
-                  );
-                }
-              },
-              child: const Text('Wyślij kod resetujący'),
-            ),
-          ],
-        );
-      },
     );
   }
 }
